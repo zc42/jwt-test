@@ -2,6 +2,7 @@ package com.zc.tests.jwt.controllers;
 
 import com.zc.tests.jwt.configurations.SecurityFilterChainConfig;
 import com.zc.tests.jwt.utils.Greetings;
+import jakarta.servlet.http.HttpSession;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -102,8 +103,9 @@ public class JwtController {
     }
 
     @GetMapping
-    public Greetings greetings() {
-        return Greetings.create(this.getClass());
+    public Greetings greetings(HttpSession session) {
+        session.setAttribute("someName", "someValue");
+        return Greetings.create(this.getClass(), session);
     }
 
     private String getJWT(String userName) {

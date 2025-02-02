@@ -1,5 +1,6 @@
 package com.zc.tests.jwt.utils;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -7,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Getter
 @RequiredArgsConstructor(staticName = "from")
@@ -18,8 +21,18 @@ public class Greetings  {
     private final String[] greetings;
     private final List<String> availableEndpoints;
 
-    public static Greetings create(Class<?> clazz) {
-        String msg = MessageFormat.format("Hello from {0}\ngoto to /swagger-ui/index.html for some ui", clazz.getSimpleName());
+    public static Greetings create(Class<?> clazz, HttpSession httpSession) {
+
+        List<String> sessionAttributeNames=new ArrayList<>();
+        httpSession.getAttributeNames().asIterator().forEachRemaining(sessionAttributeNames::add);
+        String attributeNames = sessionAttributeNames.stream().map(Object::toString).collect(Collectors.joining("/n"));
+
+        String msg = MessageFormat.format("Hello from {0}\ngoto to /swagger-ui/index.html for some ui\n" +
+                        "Session attributes:\n{1}\n" +
+                        "Session id: {2}\n",
+                clazz.getSimpleName(),
+                attributeNames,
+                httpSession.getId());
         String[] greetings = msg.split("\n");
 
         Method[] methods = clazz.getDeclaredMethods();
