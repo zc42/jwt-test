@@ -15,9 +15,9 @@ public class JwtApplication {
     public static void main(String[] args) {
 
         ConfigurableApplicationContext apc = SpringApplication.run(JwtApplication.class, args);
-        logger.info("******************************   BeanDefinitionNames -- start");
-        Arrays.stream(apc.getBeanDefinitionNames()).sorted().forEach(logger::info);
-        logger.info("******************************   BeanDefinitionNames -- end");
+//        logger.info("******************************   BeanDefinitionNames -- start");
+//        Arrays.stream(apc.getBeanDefinitionNames()).sorted().forEach(logger::info);
+//        logger.info("******************************   BeanDefinitionNames -- end");
     }
 
 }
